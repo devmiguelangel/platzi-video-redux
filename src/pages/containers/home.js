@@ -9,6 +9,9 @@ import VideoPlayer from '../../player/containers/video-player';
 
 import { connect } from 'react-redux';
 import { List } from 'immutable';
+// import { openModal, closeModal } from './../../actions';
+import { bindActionCreators } from 'redux'
+import * as actions from './../../actions';
 
 class Home extends Component {
   /* state = {
@@ -27,18 +30,13 @@ class Home extends Component {
   } */
 
   handleOpenModal = (id) => {
-    this.props.dispatch({
-      type: 'OPEN_MODAL',
-      payload: {
-        mediaId: id,
-      }
-    })
+    // this.props.dispatch(openModal(id));
+    this.props.actions.openModal(id);
   }
 
   handleCloseModal = () => {
-    this.props.dispatch ({
-      type: 'CLOSE_MODAL',
-    });
+    // this.props.dispatch(closeModal());
+    this.props.actions.closeModal();
   }
 
   render() {
@@ -95,8 +93,12 @@ const mapStateToProps = (state, props) => {
   }
 };
 
-const ContainerHome = connect(
-  mapStateToProps,
-)(Home);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  }
+};
+
+const ContainerHome = connect(mapStateToProps, mapDispatchToProps)(Home);
 
 export default ContainerHome;

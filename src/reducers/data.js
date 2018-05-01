@@ -1,5 +1,6 @@
 import schema from '../schemas';
 import { fromJS } from "immutable";
+import { SEARCH_ENTITIES } from './../action-types';
 
 const initialState = fromJS({
   entities: schema.entities,
@@ -9,7 +10,7 @@ const initialState = fromJS({
 
 const data = (state = initialState, action) => {
   switch (action.type) {
-    case 'SEARCH_SONG': {
+    case SEARCH_ENTITIES: {
       const { query } = action.payload;
       /* let results = [];
 

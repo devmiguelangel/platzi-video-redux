@@ -8,9 +8,10 @@ import HandleError from '../../error/containers/handle-error';
 import VideoPlayer from '../../player/containers/video-player';
 
 import { connect } from 'react-redux';
+import { List } from 'immutable';
 
 class Home extends Component {
-  state = {
+  /* state = {
     modalVisible: false,
   }
   handleOpenModal = (media) => {
@@ -23,7 +24,23 @@ class Home extends Component {
     this.setState({
       modalVisible: false,
     })
+  } */
+
+  handleOpenModal = (id) => {
+    this.props.dispatch({
+      type: 'OPEN_MODAL',
+      payload: {
+        mediaId: id,
+      }
+    })
   }
+
+  handleCloseModal = () => {
+    this.props.dispatch ({
+      type: 'CLOSE_MODAL',
+    });
+  }
+
   render() {
     return (
       <HandleError>
@@ -35,15 +52,16 @@ class Home extends Component {
             handleOpenModal={this.handleOpenModal}
           />
           {
-            this.state.modalVisible &&
+            this.props.modal.get('visibility') &&
             <ModalContainer>
               <Modal
                 handleClick={this.handleCloseModal}
               >
                 <VideoPlayer
                   autoplay
-                  src={this.state.media.src}
-                  title={this.state.media.title}
+                  id={this.props.modal.get('mediaId')}
+                  // src={this.state.media.get('src')}
+                  // title={this.state.media.title}
                 />
               </Modal>
             </ModalContainer>
@@ -55,9 +73,25 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const categories = state.get('data').get('categories').map(categoryId => {
+    return state.get('data').get('entities').get('categories').get(categoryId);
+  });
+
+  const search = state.get('data').get('search');
+  let searchResult = List();
+
+  if (search) {
+    const mediaList = state.get('data').get('entities').get('media');
+    
+    searchResult = mediaList.filter(item => {
+      return item.get('author').toLowerCase().includes(search.toLowerCase());
+    }).toList();
+  }
+
   return {
-    categories: state.data.categories,
-    search: state.search,
+    categories: categories,
+    search: searchResult,
+    modal: state.get('modal'),
   }
 };
 

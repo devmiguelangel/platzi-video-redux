@@ -1,18 +1,32 @@
-const data = (state, action) => {
+import schema from '../schemas';
+import { fromJS } from "immutable";
+
+const initialState = fromJS({
+  entities: schema.entities,
+  categories: schema.result.categories,
+  search: '',
+});
+
+const data = (state = initialState, action) => {
   switch (action.type) {
     case 'SEARCH_SONG': {
       const { query } = action.payload;
+      /* let results = [];
 
-      const list = state.data.categories[2].playlist;
+      if (query) {
+        const list = state.data.categories[2].playlist;
 
-      const results = list.filter(item => {
-        return item.author.includes(query);
-      });
+        results = list.filter(item => {
+          return item.author.includes(query);
+        });
+      } */
 
-      return {
+      /* return {
         ...state,
         search: results
-      };
+      }; */
+      
+      return state.set('search', query);
     }
     default:
       return state;

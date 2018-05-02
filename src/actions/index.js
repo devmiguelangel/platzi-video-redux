@@ -15,3 +15,11 @@ export const searchEntities = (query) => ({
     query,
   }
 });
+
+export const searchAsyncEntities = (query) => (
+  (dispatch) => {
+    setTimeout(() => {
+      dispatch(searchEntities(query));
+    }, 5000);
+  }
+);

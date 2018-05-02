@@ -48,6 +48,7 @@ class Home extends Component {
             categories={this.props.categories}
             search={this.props.search}
             handleOpenModal={this.handleOpenModal}
+            isLoading={this.props.isLoading}
           />
           {
             this.props.modal.get('visibility') &&
@@ -90,6 +91,7 @@ const mapStateToProps = (state, props) => {
     categories: categories,
     search: searchResult,
     modal: state.get('modal'),
+    isLoading: state.get('isLoading').get('active'),
   }
 };
 

@@ -1,3 +1,5 @@
+import { IS_LOADING } from './../action-types';
+
 export const openModal = (mediaId) => ({
   type: 'OPEN_MODAL',
   payload: {
@@ -16,9 +18,20 @@ export const searchEntities = (query) => ({
   }
 });
 
+export const isLoading = (active) => ({
+  type: IS_LOADING,
+  payload: {
+    active
+  }
+});
+
 export const searchAsyncEntities = (query) => (
   (dispatch) => {
+    dispatch(isLoading(true));
+
     setTimeout(() => {
+      dispatch(isLoading(false));
+
       dispatch(searchEntities(query));
     }, 5000);
   }
